@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('' , include('Home.urls',namespace="Home")),
     path('' , include('Panel.urls',namespace="PAnel")),
+    path('' , include('BikeSharing.urls',namespace="BikeSharing")),
 
 ]
 
