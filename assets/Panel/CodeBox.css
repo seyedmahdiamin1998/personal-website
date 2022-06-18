@@ -1,0 +1,14 @@
+/* xmp:before {
+    content: counter(line);
+    counter-increment: line;
+} */
+  
+pre {
+    white-space: nowrap;
+    counter-reset: line;
+    min-height: 10px;
+    background: #222222;
+    padding: 15px;
+    color: #ffffff;
+    overflow: scroll
+}

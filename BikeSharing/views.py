@@ -5,3 +5,7 @@ from django.shortcuts import render
 def BikeSharingView(request):
     context={}
     return render(request, 'BikeSharing.html', context)
+
+def NoteBookView(request):
+    context={}
+    return render(request, 'BikeSharingNoteBook.html', context)

@@ -4,6 +4,7 @@
 {% block addHeaderRefrences %}
 <link rel="stylesheet" href="{% static 'Panel/HomePanel/css/HomePanel.css'%}">
 <link rel="stylesheet" href="{% static 'Sidebar/css/sidebars.css'%}">
+<link rel="stylesheet" href="{% static 'Panel/CodeBox.css'%}">
 
 <style>
 
@@ -60,8 +61,17 @@
 <br>
 <h2>Bike sharing</h2>
 <p>
-    {% lorem 20 %}
+    {% lorem 10 %}
 </p>
+<pre>
+    <code><xmp>x="hello world"</xmp></code>
+    <code><xmp>print (x)</xmp></code>
+    <code><xmp>print (x)</xmp></code>
+    <code><xmp>print (x)</xmp></code>
+    <code><xmp>print (x)</xmp></code>
+    <code><xmp>print (x)</xmp></code>
+    <code><xmp>print (x)</xmp></code>
+</pre>
 {% endblock content %}
 
 
