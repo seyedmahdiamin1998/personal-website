@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Home',
     'Panel',
+    'Bitcoin',
     'BikeSharing',
 ]
 

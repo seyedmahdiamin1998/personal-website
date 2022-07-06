@@ -33,12 +33,14 @@
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <div class="col">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" style='height:425px'>
                     <a href="{% url 'BikeSharing:BikeSharingPanel'%}">
                     <img src="{% static 'BikeSharing/img/BikeSharing.jpeg'%}" width="100%" height="225" style='border-radius: 4px;'>
                     </a>
                     <div class="card-body">
-                        <p class="card-text" style='text-align: justify'>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text" style='text-align: justify'>
+                            <h5>Bike sharing </h5>
+                            This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="{% url 'BikeSharing:BikeSharingPanel'%}">  
                                 <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
@@ -49,23 +51,36 @@
                 </div>
             </div>
             
-            <div class="col">
-                <div class="card shadow-sm">
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: coming soon..." preserveAspectRatio="xMidYMid slice" focusable="false"><title>coming soon ...</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">coming soon ...</text></svg>
+            <div class="col" >
+                <div class="card shadow-sm" style='height:425px'>
+                    <a href="{% url 'Bitcoin:BitcoinChart'%}">
+                        <img src="{% static 'Bitcoin/img/3.jpg'%}" width="100%" height="225" style='border-radius: 4px;'>
+                    </a>
                     <div class="card-body">
-                        <p class="card-text" style='text-align: justify'>coming soon ...</p><br><br>
+                        <p class="card-text" style='text-align: justify'>
+                            <h5>Bitcoin </h5>
+                            A project to analyze Bitcoin and forecast its movement to help financial market analysts                            
+                            #timeseries #Bitcoin
+                        </p>
+                        
                         <div class="d-flex justify-content-between align-items-center">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                            <a href="{% url 'Bitcoin:BitcoinChart'%}">  
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                            </a>
                             <small class="text-muted"></small>
                         </div>
+                        
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" style='height:425px'>
                     <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: coming soon..." preserveAspectRatio="xMidYMid slice" focusable="false"><title>coming soon ...</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">coming soon ...</text></svg>
                     <div class="card-body">
-                        <p class="card-text" style='text-align: justify'>coming soon ...</p><br><br>
+                        <p class="card-text" style='text-align: justify'>
+                            {% comment %} <h5>Title </h5> {% endcomment %}
+                            coming soon ...</p>
+                            <br><br><br><br>
                         <div class="d-flex justify-content-between align-items-center">
                             <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                             <small class="text-muted"></small>

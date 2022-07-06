@@ -1,0 +1,74 @@
+{% extends 'shared/SamplesLayout.html' %}
+{% load static %}
+
+{% block addHeaderRefrences %}
+<link rel="stylesheet" href="{% static 'Panel/HomePanel/css/HomePanel.css'%}">
+<link rel="stylesheet" href="{% static 'Sidebar/css/sidebars.css'%}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'></script>
+<style>
+
+    
+</style>
+{% endblock addHeaderRefrences %}
+
+
+<!-- sidebar -->
+{% block sidebar %}
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" >
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <span class="fs-4">Bitcoin</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+            Chart
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link link-dark" aria-current="page">
+                ML Notebook
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link link-dark" aria-current="page">
+                Predict
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link link-dark" aria-current="page">
+                More information
+            </a>
+        </li>
+    </ul>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class='nav-item'>
+            <a href="{% url 'Panel:HomePanel'%}" class="nav-link link-dark">
+                Sample works
+            </a>
+        </li>
+        <li class='nav-item'>
+            <a href="../" class="nav-link link-dark">
+            About me
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock sidebar %}
+
+<!-- content -->
+{% block content %}
+<br>
+<h3>Bitcoin / Tether (BTCUSDT)</h3>
+<div id='chart' style='border: 2px solid grey;border-radius: 5px;'></div>
+
+{% endblock content %}
+
+
+{% block addFooterRefrences %}
+<script src="{% static 'Sidebar/js/sidebars.js' %}"></script>
+<script src="{% static 'Bitcoin/js/chart.js' %}"></script>
+<script src="{% static 'Bitcoin/js/data.js' %}"></script>
+{% endblock addFooterRefrences %}
