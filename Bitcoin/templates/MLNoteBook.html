@@ -1,0 +1,39 @@
+{% extends 'shared/SamplesLayout.html' %}
+{% load static %}
+
+{% block addHeaderRefrences %}
+<link rel="stylesheet" href="{% static 'Panel/HomePanel/css/HomePanel.css'%}">
+<link rel="stylesheet" href="{% static 'Sidebar/css/sidebars.css'%}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{% static 'Bitcoin/js/lightWeightChart.js'%}"></script>
+{% comment %} <script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'></script> {% endcomment %}
+<style>
+
+    
+</style>
+{% endblock addHeaderRefrences %}
+
+
+<!-- sidebar -->
+{% block sidebar %}
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" >
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <span class="fs-4">ML NoteBook</span>
+    </a>
+    {% include 'sidebar.html' %}
+</div>
+{% endblock sidebar %}
+<!--------------------------------------------------------------------------------------------------------------------------->
+<!-- content -->
+{% block content %}
+<br>
+
+{% endblock content %}
+<!--------------------------------------------------------------------------------------------------------------------------->
+
+{% block addFooterRefrences %}
+<script src="{% static 'Sidebar/js/sidebars.js' %}"></script>
+<script src="{% static 'Bitcoin/js/candlestickchart.js' %}"></script>
+<script src="{% static 'Bitcoin/js/MDDchart.js' %}"></script>
+<script src="{% static 'Bitcoin/js/data.js' %}"></script>
+{% endblock addFooterRefrences %}

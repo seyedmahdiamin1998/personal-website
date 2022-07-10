@@ -5,7 +5,8 @@
 <link rel="stylesheet" href="{% static 'Panel/HomePanel/css/HomePanel.css'%}">
 <link rel="stylesheet" href="{% static 'Sidebar/css/sidebars.css'%}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'></script>
+<script src="{% static 'Bitcoin/js/lightWeightChart.js'%}"></script>
+{% comment %} <script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'></script> {% endcomment %}
 <style>
 
     
@@ -19,56 +20,73 @@
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <span class="fs-4">Bitcoin</span>
     </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
-            Chart
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link link-dark" aria-current="page">
-                ML Notebook
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link link-dark" aria-current="page">
-                Predict
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link link-dark" aria-current="page">
-                More information
-            </a>
-        </li>
-    </ul>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class='nav-item'>
-            <a href="{% url 'Panel:HomePanel'%}" class="nav-link link-dark">
-                Sample works
-            </a>
-        </li>
-        <li class='nav-item'>
-            <a href="../" class="nav-link link-dark">
-            About me
-            </a>
-        </li>
-    </ul>
+    {% include 'sidebar.html' %}
 </div>
 {% endblock sidebar %}
-
+<!--------------------------------------------------------------------------------------------------------------------------->
 <!-- content -->
 {% block content %}
 <br>
-<h3>Bitcoin / Tether (BTCUSDT)</h3>
-<div id='chart' style='border: 2px solid grey;border-radius: 5px;'></div>
+<div class='row' id='firstChart'>
+    <h4>Bitcoin / Tether (BTCUSDT) - 15min</h4>
+    <div id='candlestickchart' style='border: 2px solid grey;border-radius: 5px;'>
+    
+    </div>
+</div>
+<hr>
+<div class='row' id='secondChart'>
+    <h4>DrawDown</h4>
+    <p style='text-align: justify'>A drawdown is a peak-to-trough decline during a specific period for an investment, trading account, or fund. A drawdown is usually quoted as the percentage between the peak and the subsequent trough. If a trading account has $10,000 in it, and the funds drop to $9,000 before moving back above $10,000, then the trading account witnessed a 10% drawdown.</p>
+    <p style='text-align: justify;margin-top:-16px'>And Maximum drawdown (MDD) is a specific measure of drawdown that looks for the greatest movement from a high point to a low point, before a new peak is achieved.<p>
+    <div class='col-sm-4' style='height: 250px; position: relative'>
+      
+      <table class="table table-hover table-bordered table-sm" style='position: absolute; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%)'>
+        <thead>
+          <tr>
+            {% comment %} <th scope="col"></th> {% endcomment %}
+            {% comment %} <th scope="col" style='text-align:center'></th> {% endcomment %}
+          </tr> 
+        </thead>
+        <tbody>
+          <tr>
+            <td>MDD</td>
+            <td id='MDD_ID' style='text-align:center'></td>
+          </tr>
+          <tr>
+            {% comment %} <th scope="row">1</th> {% endcomment %}
+            <td>Time</td>
+            <td id='MDD_Time' style='text-align:center'></td>
+          </tr>
+          
+          <tr>
+            <td>How many candle from Max?</td>
+            <td id='MDD_CandleCount' style='text-align:center'> </td>
+          </tr>
+          
+          <tr>
+            <td>Maximum Price</td>
+            <td id='MDD_MaxPrice' style='text-align:center'> </td>
+          </tr>
 
+          <tr>
+            <td>MAximum Time</td>
+            <td id='MDD_MaxTime' style='text-align:center'> </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class='col-sm-8'>
+        <div id='MDDchart' style='border: 2px solid grey;border-radius: 5px;'>
+        </div>
+    </div>
+</div>
 {% endblock content %}
-
+<!--------------------------------------------------------------------------------------------------------------------------->
 
 {% block addFooterRefrences %}
 <script src="{% static 'Sidebar/js/sidebars.js' %}"></script>
-<script src="{% static 'Bitcoin/js/chart.js' %}"></script>
+<script src="{% static 'Bitcoin/js/candlestickchart.js' %}"></script>
+<script src="{% static 'Bitcoin/js/MDDchart.js' %}"></script>
 <script src="{% static 'Bitcoin/js/data.js' %}"></script>
 {% endblock addFooterRefrences %}

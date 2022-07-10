@@ -1,0 +1,55 @@
+{% url 'Bitcoin:Chart' as Charts %}
+{% url 'Bitcoin:MLNoteBook' as MLNoteBook %}
+
+<hr>
+<ul class="nav nav-pills flex-column mb-auto">  
+    <li class="nav-item">
+        <a href="{{Charts}}" class="nav-link {%if request.path == Charts%} active {%else%}link-dark{% endif %}" aria-current="page">
+        Charts
+        </a>
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li class="nav-item"><a href="#firstChart" class=" nav-link link-dark rounded">- Candlestick Chart</a></li>
+            <li class="nav-item"><a href="#secondChart" class=" nav-link link-dark rounded">- Drawdown</a></li>
+            <li class="nav-item"><a href="#" class=" nav-link link-dark rounded">- Profile</a></li>
+            <li class="nav-item"><a href="#" class=" nav-link link-dark rounded">- Settings</a></li>
+            <li class="nav-item"><a href="#" class=" nav-link link-dark rounded">- Sign out</a></li>
+        </ul>
+    </li> 
+
+    <li class="nav-item">
+        <a href="{{ MLNoteBook }}" class="nav-link {%if request.path == MLNoteBook%}active{% else %}link-dark{%endif%}" aria-current="page">
+            ML Notebook
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link link-dark" aria-current="page">
+            Predict
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link link-dark" aria-current="page">
+            More information
+        </a>
+    </li>
+</ul>
+<hr>
+
+<ul class="nav nav-pills flex-column mb-auto">
+    <li class='nav-item'>
+        <a href="{% url 'Panel:HomePanel'%}" class="nav-link link-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-columns-gap" viewBox="0 0 16 16">
+                <path d="M6 1v3H1V1h5zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12v3h-5v-3h5zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8v7H1V8h5zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6v7h-5V1h5zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
+            </svg>
+            Sample works
+        </a>
+    </li>
+    <li class='nav-item'>
+        <a href="../" class="nav-link link-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                </svg>
+            About me
+        </a>
+    </li>
+    
+</ul>

@@ -1,4 +1,4 @@
-var chart = LightweightCharts.createChart(document.getElementById("chart"), {
+var chart = LightweightCharts.createChart(document.getElementById("candlestickchart"), {
 	width: $("#chart").width()-20,  //865,
 	height: 500,  //500,
 	leftPriceScale: {
@@ -85,15 +85,15 @@ var volumeSeries = chart.addHistogramSeries({
 /////////////////////////////////////////////////////////////////////////////////////////
 // resize
 $(document).ready(function () {
-	chart.applyOptions({ width: $('#chart').width(), })
+	chart.applyOptions({ width: $('#candlestickchart').width(), })
 });
 $(window).resize(function () {
-	chart.applyOptions({ width: $('#chart').width(), })
+	chart.applyOptions({ width: $('#candlestickchart').width(), })
 });
 /////////////////////////////////////////////////////////////////////////////////////////
 
 // Fullscreen Chart 
-$('#chart').on('dblclick', function(){
+$('#candlestickchart').on('dblclick', function(){
     // if already full screen; exit
     // else go fullscreen
     if (
@@ -113,7 +113,7 @@ $('#chart').on('dblclick', function(){
         }
         chart.applyOptions({ width: 500, height: 600 });
     } else {
-        element = $('#chart').get(0);
+        element = $('#candlestickchart').get(0);
         if (element.requestFullscreen) {
         element.requestFullscreen();
         } else if (element.mozRequestFullScreen) {
@@ -134,7 +134,7 @@ document.addEventListener('MSFullscreenChange', exitHandler);
   
 function exitHandler() {
     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
-    chart.applyOptions({ width: $("#chart").width(), height: 500 });
+    chart.applyOptions({ width: $("#candlestickchart").width(), height: 500 });
 
     }
 }  
