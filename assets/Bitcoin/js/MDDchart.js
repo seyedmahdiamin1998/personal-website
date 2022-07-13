@@ -10,10 +10,8 @@ function DrawDownFunc(data){
 
 		if(data[i].high-h_high===0){
 		fall_series.push({ "time":data[i].time ,"value":((data[i].high-h_high)*100/h_high)});
-		// fall_series_array.push(((data[i].high-h_high)*100/h_high));
 		}else{
 		fall_series.push({ "time":data[i].time ,"value":((data[i].low-h_high)*100/h_high)});
-		// fall_series_array.push(((data[i].low-h_high)*100/h_high));
 		};
 	};
 	let MDD_={'time':0, 'value':0, 'Count':0, 'MaxPrice':0, 'MaxTime':0 };

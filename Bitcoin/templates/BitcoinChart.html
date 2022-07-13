@@ -6,10 +6,10 @@
 <link rel="stylesheet" href="{% static 'Sidebar/css/sidebars.css'%}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="{% static 'Bitcoin/js/lightWeightChart.js'%}"></script>
-{% comment %} <script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'></script> {% endcomment %}
+<script src="{% static 'Apache Echarts/js/echart.js'%}"></script>
+
 <style>
 
-    
 </style>
 {% endblock addHeaderRefrences %}
 
@@ -38,13 +38,11 @@
     <h4>DrawDown</h4>
     <p style='text-align: justify'>A drawdown is a peak-to-trough decline during a specific period for an investment, trading account, or fund. A drawdown is usually quoted as the percentage between the peak and the subsequent trough. If a trading account has $10,000 in it, and the funds drop to $9,000 before moving back above $10,000, then the trading account witnessed a 10% drawdown.</p>
     <p style='text-align: justify;margin-top:-16px'>And Maximum drawdown (MDD) is a specific measure of drawdown that looks for the greatest movement from a high point to a low point, before a new peak is achieved.<p>
-    <div class='col-sm-4' style='height: 250px; position: relative'>
+    <div class='col-sm-4' style='height: 304px; position: relative'>
       
       <table class="table table-hover table-bordered table-sm" style='position: absolute; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%)'>
         <thead>
           <tr>
-            {% comment %} <th scope="col"></th> {% endcomment %}
-            {% comment %} <th scope="col" style='text-align:center'></th> {% endcomment %}
           </tr> 
         </thead>
         <tbody>
@@ -53,7 +51,6 @@
             <td id='MDD_ID' style='text-align:center'></td>
           </tr>
           <tr>
-            {% comment %} <th scope="row">1</th> {% endcomment %}
             <td>Time</td>
             <td id='MDD_Time' style='text-align:center'></td>
           </tr>
@@ -69,7 +66,7 @@
           </tr>
 
           <tr>
-            <td>MAximum Time</td>
+            <td>Maximum Price Time</td>
             <td id='MDD_MaxTime' style='text-align:center'> </td>
           </tr>
 
@@ -81,6 +78,14 @@
         </div>
     </div>
 </div>
+<hr>
+<div class='row' id='thirdchart'>
+  <h4>Compare BTCUSDT</h4>
+  <div id='CompareBTCUSDT'>
+
+  </div>
+</div>
+
 {% endblock content %}
 <!--------------------------------------------------------------------------------------------------------------------------->
 
@@ -89,4 +94,5 @@
 <script src="{% static 'Bitcoin/js/candlestickchart.js' %}"></script>
 <script src="{% static 'Bitcoin/js/MDDchart.js' %}"></script>
 <script src="{% static 'Bitcoin/js/data.js' %}"></script>
+<script src="{% static 'Bitcoin/js/raceLine.js' %}"></script>
 {% endblock addFooterRefrences %}

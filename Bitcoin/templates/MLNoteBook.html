@@ -4,13 +4,12 @@
 {% block addHeaderRefrences %}
 <link rel="stylesheet" href="{% static 'Panel/HomePanel/css/HomePanel.css'%}">
 <link rel="stylesheet" href="{% static 'Sidebar/css/sidebars.css'%}">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="{% static 'Bitcoin/js/lightWeightChart.js'%}"></script>
-{% comment %} <script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'></script> {% endcomment %}
-<style>
 
-    
-</style>
+<link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
 {% endblock addHeaderRefrences %}
 
 
@@ -27,6 +26,49 @@
 <!-- content -->
 {% block content %}
 <br>
+<h4> >>> Importing necessary modules </h4>
+<pre>
+<code class="python">>import pandas as pd
+import ccxt
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+import xgboost as xgb
+from xgboost import plot_importance
+from sklearn.model_selection import cross_val_score
+</code>
+</pre>
+
+
+<h4>>>> Collect data from binance API</h4>
+<pre>
+<code class='python'># """ import all ETHUSDT OHLC data from Binance """
+coin='ETH/USDT'
+timeframe='1d'
+exchange=ccxt.binance()
+start_date=0
+# start_date = int(datetime.datetime(2017, 1, 1, 1, 1).timestamp() * 1000)
+
+data=pd.DataFrame(columns=['date', 'open', 'high', 'low', 'close', 'volume'])
+
+while True:
+    response=exchange.fetch_ohlcv(coin, timeframe, since=start_date, limit=1000)
+    df=pd.DataFrame(response, columns=['date', 'open', 'high', 'low', 'close', 'volume'])
+    updateData=pd.merge(data, df, how='outer')
+    if len(data)!=len(updateData):
+        data=updateData.copy()
+        start_date=data['date'].iloc[-1]
+    else:
+        break
+    
+data.drop_duplicates(inplace=True,subset=['date'])
+data.date=pd.to_datetime(data['date'], unit='ms', utc=True, yearfirst=True)
+data.drop(data.tail(1).index,inplace=True) # because the last row is not close
+data.to_csv('data.csv')
+print(data.head(5))
+print(data.tail(5))
+</code>
+</pre>
+
 
 {% endblock content %}
 <!--------------------------------------------------------------------------------------------------------------------------->
