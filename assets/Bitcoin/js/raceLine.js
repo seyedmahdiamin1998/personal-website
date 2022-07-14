@@ -92,7 +92,6 @@ $(window).scroll(function() {
     }
 });
 
-
 function run(_rawData) {
     const symbols = [
         'BTCUSDT',

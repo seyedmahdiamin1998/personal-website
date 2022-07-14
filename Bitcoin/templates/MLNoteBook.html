@@ -25,10 +25,15 @@
 <!--------------------------------------------------------------------------------------------------------------------------->
 <!-- content -->
 {% block content %}
+<h3>Create a machine learning model to trade cryptocurrency</h3>
+<p>Here I want to create a bot that can make money from the cryptocurrency market. Common methods for forecasting financial markets are usually time series methods such as ARIMA, etc., but I want to solve this problem with a new approach.
+I use classification models to solve this challenge.</p>
+
 <br>
+<!---->
 <h4> >>> Importing necessary modules </h4>
 <pre>
-<code class="python">>import pandas as pd
+<code class="python">import pandas as pd
 import ccxt
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -38,8 +43,21 @@ from sklearn.model_selection import cross_val_score
 </code>
 </pre>
 
-
+<!---->
 <h4>>>> Collect data from binance API</h4>
+<p>We used the ccxt module to get the data. For more information about this powerful module, you can use the following link. <a href="https://github.com/ccxt/ccxt"> CCXT – CryptoCurrency eXchange Trading Library
+</a></p>
+
+
+<p>We collect all daily ETH USDT data from the Binance broker. This information consists of 5 columns which are date, open, high, low, close and volume.</p>
+<ul>
+    <li>date: The time of opening the candle</li>
+    <li>open: The first price traded</li>
+    <li>high: The highest price traded</li>
+    <li>low: The lowest price traded</li>
+    <li>close: Last traded price</li>
+    <li>volume: traded volume</li>
+</ul>
 <pre>
 <code class='python'># """ import all ETHUSDT OHLC data from Binance """
 coin='ETH/USDT'
@@ -64,11 +82,145 @@ data.drop_duplicates(inplace=True,subset=['date'])
 data.date=pd.to_datetime(data['date'], unit='ms', utc=True, yearfirst=True)
 data.drop(data.tail(1).index,inplace=True) # because the last row is not close
 data.to_csv('data.csv')
-print(data.head(5))
-print(data.tail(5))
 </code>
 </pre>
 
+<!---->
+<h4>>>> Create independent variable</h4>
+<h5>DrawDown</h5>
+<p>To use the machine learning model, we need more predictive variables.
+One of the variables we can use is drawdown.</p>
+<p>A drawdown is a peak-to-trough decline during a specific period for an investment, trading account,
+     or fund. A drawdown is usually quoted as the percentage between the peak and the subsequent trough.
+      If a trading account has $10,000 in it, and the funds drop to $9,000 before moving back above $10,000,
+       then the trading account witnessed a 10% drawdown.</p>
+<pre>
+    <code class='python'># Calculate drawdown
+HighestHigh = [data['high'].iloc[0]]
+for i in range(1,len(data)):
+    if data['high'].iloc[i] >= HighestHigh[-1]:
+        HighestHigh.append(data['high'].iloc[i])
+    else:
+        HighestHigh.append(HighestHigh[-1])
+        
+data['HighestHigh'] = HighestHigh
+data['DrawDown'] = data.apply(lambda row: 0 if row['high']==row['HighestHigh'] else (row['low']-row['HighestHigh'])*100/row['HighestHigh'], axis=1)</code>
+</pre>
+<!---->
+<h5>Maximum drawdown(MDD)</h5>
+<p>Maximum drawdown is a specific measure of drawdown that looks for the greatest movement from a high point to a low point, before a new peak is achieved.<p>
+<pre><code class='python'># Maximum Drawdown (MDD) 
+print("Maximum Drawdown (MDD): {0} %".format(data.loc[data['DrawDown'] == min(data['DrawDown']) ,"DrawDown"].values[0].round(2)))
+</code></pre>
+<!---->
+<h5>Plot Draw Down</h5>
+
+<pre><code>plt.figure(figsize=(15,7))
+plt.plot(data['date'], data['DrawDown'])
+</code>
+</pre>
+<!---->
+<img src="{% static 'Bitcoin/img/output_DrawDown_NoteBook.png' %}" alt='drawdown'>
+<!---->
+<h5>add independent variable</h5>
+<pre><code>for i in range(1,51):
+    data['pctchange{0}'.format(i)]=data['close'].pct_change(i)
+
+for i in range(1,51):
+    data['pctchange1_{0}'.format(i)] = data['pctchange1'].shift(i)
+    data['DrawDown{0}'.format(i)] = data['DrawDown'].shift(i)
+
+data['year']=data['date'].dt.year
+data['month']=data['date'].dt.month
+data['day']=data['date'].dt.day
+data['dayofyear']=data['date'].dt.dayofyear
+
+data.dropna(inplace=True)</code>
+</pre>
+<!---->
+<h4>>>> Defining dependent variable</h4>
+<p>Here we define our dependent variable as follows:
+If the next candle has a price increase of more than 1%, we will enter the buying position.
+We can use any amount more from the exchange commission because of that way we make a profit.</p>
+<p>with this trick, we can now use classification models :)</p>
+<pre><code class='python'>data['target']=data['pctchange1'].apply(lambda x : 1 if x>0.01 else 0)</code></pre>
+<!---->
+<h4>>>> Split the dataset into a training dataset and a test dataset</h4>
+<p>The train-test split procedure is used to estimate the performance of machine learning algorithms when they are used to make predictions on data not used to train the model.</p>
+<pre><code class='python'>X_train, X_test, y_train, y_test = train_test_split(data[data.columns.difference(['date','pctchange1','target'])], data['target'], test_size=0.33, random_state=42)</code></pre>
+<!---->
+<h4>>>> Create XGboost model</h4>
+<pre><code class='python'>xg_reg = xgb.XGBClassifier(num_class=1,
+learning_rate=0.1,
+max_depth=10,
+scale_pos_weight=1.5,
+eval_metric='mlogloss',
+use_label_encoder=False)
+xg_reg.fit( X_train, y_train )</code></pre>
+
+<!---->
+<h4>>>> Top 10 most important features</h4>
+<pre><code class='python'>ax= plot_importance( xg_reg , height=0.9, max_num_features=15)
+fig = ax.figure
+fig.set_size_inches(15, 5)
+</code></pre>
+<img src="{% static 'Bitcoin/img/importanceVariables.png' %}" alt='importance Xgboost variables'>
+<p><i>We found that the drawdown variable did not have much effect on predicting our dependent variable and we could remove it from the model training process in the future.</i><p>
+<!---->
+<h4>>>> K-fold Cross Validation</h4>
+<p>Cross-validation is a statistical method used to estimate the skill of machine learning models.</p>
+<p>For more information about k-fold cross validation, you can use the following link. <a href="https://machinelearningmastery.com/k-fold-cross-validation/">K-fold Cross Validation</a></p>
+
+<img alt="grid_search_cross_validation" class="align-center" src="https://scikit-learn.org/stable/_images/grid_search_cross_validation.png" style="width: 500px; height: 300px;">
+
+<pre><code class='python'>accuracies = cross_val_score(estimator=xg_reg, X=X_train, y=y_train, cv=10, scoring='accuracy')
+print("Accuracy Mean: {0}, Accuracy standard deviation: {1}".format(accuracies.mean(),accuracies.std())) 
+recall = cross_val_score(estimator=xg_reg, X=X_train, y=y_train, cv=10, scoring='recall')
+print("recall Mean: {0}, recall standard deviation: {1}".format(recall.mean(),recall.std()))
+precision=cross_val_score(estimator=xg_reg, X=X_train, y=y_train, cv=10, scoring='precision')
+print("precision Mean: {0}, precision standard deviation: {1}".format(precision.mean(),precision.std()))
+F_score =cross_val_score(estimator=xg_reg, X=X_train, y=y_train, cv=10, scoring='f1')
+print("F_score Mean: {0}, F_score standard deviation: {1}".format(F_score.mean(),F_score.std()))</code></pre>
+<!---->
+<h4>>>> Predict data</h4>
+<pre><code class='python'>y_pred = xg_reg.predict(X_test)</code></pre>
+<!---->
+<h4>>>> Confusion Matrix</h4>
+<p>A confusion matrix is used to check the performance of a classification model on a set of test data for which the true values are known. Most performance measures such as precision, recall are calculated from the confusion matrix.
+</p>
+<p>For more information about confusion matrix, you can use the following link. <a href="https://keytodatascience.com/confusion-matrix/">confusion-matrix</a></p>
+
+<img src="https://keytodatascience.com/wp-content/uploads/2019/09/binary-classification.jpg" alt="binary classification" width="378" height="263">
+<img width="378" height="263" src="https://keytodatascience.com/wp-content/uploads/2019/09/values-3.jpg" alt="binary classification">
+<pre><code class='python'>TN=0 
+TP=0
+FP=0
+FN=0
+for i in range(len(y_pred)):
+    if y_pred[i]==1 and y_test.values[i]==1:
+        TP+=1
+    elif y_pred[i]==0 and y_test.values[i]==0:
+        TN+=1
+    elif y_pred[i]==1 and y_test.values[i]==0 :
+        FP+=1
+    else:
+        FN+=1
+
+Accuracy=(TP+TN)/(TP+TN+FP+FN)
+Recall= TP/(TP+FN)
+Precision= TP/(TP+FP)
+F_score= (2*Recall*Precision)/(Recall+Precision)
+
+print("Accuracy : {0}".format(Accuracy))
+print("Recall : {0}".format(Recall))
+print("Precision : {0}".format(Precision))
+print("F_score : {0}".format(F_score))</code></pre>
+
+<pre>>>Accuracy : 0.9486238532110092
+>>Recall : 0.9452054794520548
+>>Precision : 0.9282511210762332
+>>F_score : 0.9366515837104072</pre>
+<!---->
 
 {% endblock content %}
 <!--------------------------------------------------------------------------------------------------------------------------->
@@ -79,3 +231,4 @@ print(data.tail(5))
 <script src="{% static 'Bitcoin/js/MDDchart.js' %}"></script>
 <script src="{% static 'Bitcoin/js/data.js' %}"></script>
 {% endblock addFooterRefrences %}
+
